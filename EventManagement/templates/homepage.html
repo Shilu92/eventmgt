@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay for your Event</title>
+    <!-- Include Razorpay Checkout script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Include Bootstrap for styling -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Pay for your Event</h1>
+        <button id="rzp-button1" class="btn btn-primary">Pay Now</button>
+    </div>
+
+    <script>
+        var options = {
+            "key": "{{ razorpay_merchant_key }}", // Enter the Key ID generated from the Dashboard
+            "amount": "{{ razorpay_amount }}", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "{{ currency }}",
+            "name": "Your Company Name",
+            "description": "Event Payment",
+            "image": "https://example.com/your_logo", // Your logo URL
+            "order_id": "{{ razorpay_order_id }}", // Pass the order ID if you have one
+            "handler": function (response){
+                // Make an AJAX request to the server with the payment details
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "{{ callback_url }}", true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.setRequestHeader('X-CSRFToken', '{{ csrf_token }}');
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        window.location.href = "/payment_success/";
+                    } else if (xhr.readyState === 4) {
+                        window.location.href = "/payment_failed/";
+                    }
+                };
+                xhr.send("razorpay_payment_id=" + response.razorpay_payment_id +
+                         "&razorpay_order_id=" + response.razorpay_order_id +
+                         "&razorpay_signature=" + response.razorpay_signature +
+                         "&amount=" + "{{ razorpay_amount }}");
+            },
+            "prefill": {
+                "name": "Shilu Frank",
+                "email": "fdxxdf46@gmail.com",
+                "contact": "9999999999"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById('rzp-button1').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+</body>
+</html>

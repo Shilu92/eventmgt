@@ -1,0 +1,629 @@
+
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Tooplate">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&display=swap" rel="stylesheet">
+
+    <title>EventCraze</title>
+<head>
+    <style>
+        /* Change the background color of the navbar */
+        .header-area {
+            background-color: red !important;
+        }
+
+        /* Change the text color of the navbar links */
+        .header-area .main-nav .nav li a {
+            color: white !important;
+        }
+
+        /* Change the text color of the logo */
+        .header-area .main-nav .logo {
+            color: white !important;
+        }
+
+        /* Ensure the menu trigger is also white */
+        .header-area .main-nav .menu-trigger span {
+            color: white !important;
+        }
+
+        /* Optionally, adjust the hover effect to maintain contrast */
+        .header-area .main-nav .nav li a:hover {
+            color: lightgray !important;
+        }
+    </style>
+
+    <title>Event List</title>
+    <style>
+        /* Add some basic styling for the button */
+        .register-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .register-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" type="text/css" href="static/assets/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="static/assets/css/font-awesome.css">
+
+    <link rel="stylesheet" type="text/css" href="static/assets/css/owl-carousel.css">
+
+    <link rel="stylesheet" href="static/assets/css/tooplate-artxibition.css">
+
+
+     <script>
+        // Function to update the links with the selected eventId
+        function updateLinks(eventId) {
+            const ticketLink = document.getElementById('ticketLink');
+            if (ticketLink) {
+                ticketLink.href = `/ticket_purchase/${eventId}`;
+            }
+
+            const confirmationLink = document.getElementById('confirmationLink');
+            if (confirmationLink) {
+                confirmationLink.href = `/confirmation/${eventId}`;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const eventSelect = document.getElementById('eventSelect');
+
+            // Update links initially based on the default selected option
+            updateLinks(eventSelect.value);
+
+            // Add event listener to update links when the user selects a different event
+            eventSelect.addEventListener('change', function() {
+                updateLinks(eventSelect.value);
+            });
+        });
+    </script>
+    </head>
+    
+    <body>
+    
+    <!-- ***** Preloader Start ***** -->
+    <div class="pre-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <span>Hey! The Show is Starting in 15 Days.</span>
+                </div>
+
+                <div class="col-12">
+                    <div class="text-button">
+                        <a href="#">Contact Us Now! <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Navbar -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{% url 'home' %}" class="logo">Event<em>Craze</em></a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li><a href="{% url 'login' %}" class="active">Login</a></li>
+                            <li><a href="{% url 'register' %}">Register</a></li>
+                             <li><a href="{% url 'user_list' %}">Registered Users</a></li>
+                            <li><a href="{% url 'venue_list' %}">Book Venue</a></li>
+                            <li><a href="{% url 'event_list' %}">Shows and Events</a></li>
+                            <li><a href="{% url 'logout' %}">logout</a></li>
+                            <button onclick="window.location.href='/select_ticket/'">Purchase Tickets</button>
+                        </ul>
+                    </nav>
+
+
+                        <!-- ***** Menu End ***** -->
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+
+<div>
+<img src = "{% static 'Images/image.jpg' %}" alt = "Wallpaper_Image" style = "width:1500px; height:800px">
+
+</div>
+    <!-- ***** Main Banner Area Start ***** -->
+    <div class="main-banner">
+        <div class="counter-content">
+            <ul>
+                <li>Days<span id="days">0</span></li>
+                <li>Hours<span id="hours">0</span></li>
+                <li>Minutes<span id="minutes">0</span></li>
+                <li>Seconds<span id="seconds">0</span></li>
+            </ul>
+        </div>
+        <script>
+         document.addEventListener("DOMContentLoaded", function() {
+    // Set the countdown target date and time (e.g., 1 day from now)
+    let targetDate = new Date().getTime() + (15 * 24 * 60 * 60 * 1000); // 1 day from now
+
+    // Update the countdown every 1 second
+    let countdownInterval = setInterval(function() {
+        // Get the current date and time
+        let now = new Date().getTime();
+
+        // Calculate the remaining time
+        let remainingTime = targetDate - now;
+
+        // Calculate days, hours, minutes and seconds
+        let days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+        // Display the result in the elements with ids
+        document.getElementById("days").textContent = days;
+        document.getElementById("hours").textContent = hours;
+        document.getElementById("minutes").textContent = minutes;
+        document.getElementById("seconds").textContent = seconds;
+
+        // If the countdown is over, stop the interval
+        if (remainingTime < 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("days").textContent = 0;
+            document.getElementById("hours").textContent = 0;
+            document.getElementById("minutes").textContent = 0;
+            document.getElementById("seconds").textContent = 0;
+        }
+    }, 1000);
+});
+</script>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="main-content">
+                        <div class="next-show">
+                            <i class="fa fa-arrow-up"></i>
+                            <span>Next Show</span>
+                        </div>
+                        <h6>Opening on Thursday, May 31st</h6>
+                        <h2>The Summer Music Festival</h2>
+                        <div class="main-white-button">
+                           <button onclick="window.location.href='/select_ticket/'">Purchase Tickets</button>
+
+
+        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Main Banner Area End ***** -->
+
+    <!-- *** Owl Carousel Items ***-->
+    <div class="show-events-carousel">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="owl-show-events owl-carousel">
+                        <div class="item">
+                            <a href="/events/1/"><img src="/static/assets/images/AI.jpg" alt=""></a>
+
+                        </div>
+                        <div class="item">
+                            <a href="events/2"><img src="static/assets/images/Dream_Wedding.jpg" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="events/3/"><img src="static/assets/images/music_festival.jpg" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="events/4/"><img src="static/assets/images/fitness.jpg" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="events/5/"><img src="static/assets/images/art_exhibition.jpg" alt=""></a> 
+                        </div>
+                        <div class="item">
+                            <a href="events/6/"><img src="static/assets/images/beach wedding.jpg" alt=""></a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <title>Event List</title>
+    <style>
+        /* Add some basic styling for the layout */
+        .events-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .event-item {
+            flex: 1 1 calc(33.33% - 20px); /* Three items per row with spacing */
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .event-item h2 {
+            margin-top: 0;
+        }
+        .register-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .register-button:hover {
+            background-color: #0056b3;
+        }
+        @media (max-width: 900px) {
+            .event-item {
+                flex: 1 1 calc(50% - 20px); /* Two items per row */
+            }
+        }
+        @media (max-width: 600px) {
+            .event-item {
+                flex: 1 1 100%; /* One item per row */
+            }
+        }
+    </style>
+
+
+</head>
+    <!-- *** Amazing Venus ***-->
+    <div class="amazing-venues">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    <div class="left-content">
+                        <h4>Three Amazing Venues for events</h4>
+                        <p> 
+                        These are <a href="home">Homepage</a>, <a href="#">About</a>,
+                        <a href="venue_list">Book a venue</a>, <a href="event_list">shows &amp; events</a>, 
+                        <button onclick="window.location.href='/select_ticket/'">Purchase Tickets</button>
+                       
+                        <br>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="right-content">
+                        <h5><i class="fa fa-map-marker"></i> Visit Us</h5>
+                        <span>5 College St NW, <br>Norcross, GA 30071<br>United States</span>
+                        <div class="text-button"><a href="event_details">Need Directions? <i class="fa fa-arrow-right"></i></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- *** Venues & Tickets ***-->
+    <div class="venue-tickets">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Our Venues & Tickets</h2>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="venue-item">
+                        <div class="thumb">
+                            <img src="static/assets/images/venue1.jpg" alt="">
+                        </div>
+                        <div class="down-content">
+                            <div class="left-content">
+                                <div class="main-white-button">
+                                     <button onclick="window.location.href='/select_ticket/'">Purchase Tickets</button>
+                                </div>
+                            </div>
+                            <div class="right-content">
+                                <h4>The palace of Arts</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur vinzi iscing elit, sed doers kontra.</p>
+                                <ul>
+                                    <li><i class="fa fa-sitemap"></i>250</li>
+                                    <li><i class="fa fa-user"></i>500</li>
+                                </ul>
+                                <div class="price">
+                                    <span>1 ticket<br>from <em>$45</em></span>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-lg-4">
+                    <div class="venue-item">
+                        <div class="thumb">
+                            <img src="static/assets/images/venue2.jpg" alt="">
+                        </div>
+                        <div class="down-content">
+                            <div class="left-content">
+                                <div class="main-white-button">
+                                    <button onclick="window.location.href='/select_ticket/'">Purchase Tickets</button>
+                                </div>
+                            </div>
+                            <div class="right-content">
+                                <h4>The Enchanted Garden</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur vinzi iscing elit, sed doers kontra.</p>
+                                <ul>
+                                    <li><i class="fa fa-sitemap"></i>250</li>
+                                    <li><i class="fa fa-user"></i>500</li>
+                                </ul>
+                                <div class="price">
+                                    <span>1 ticket<br>from <em>$45</em></span>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="venue-item">
+                        <div class="thumb">
+                            <img src="static/assets/images/venue3.jpg" alt="">
+                        </div>
+                        <div class="down-content">
+                            <div class="left-content">
+                                <div class="main-white-button">
+                                     <button onclick="window.location.href='/select_ticket/'">Purchase Tickets</button>
+                                </div>
+                            </div>
+                            <div class="right-content">
+                                <h4>The Golden Crown</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur vinzi iscing elit, sed doers kontra.</p>
+                                <ul>
+                                    <li><i class="fa fa-sitemap"></i>450</li>
+                                    <li><i class="fa fa-user"></i>750</li>
+                                </ul>
+                                <div class="price">
+                                    <span>1 ticket<br>from <em>$65</em></span>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- *** Coming Events ***-->
+    <div class="coming-events">
+        <div class="left-button">
+            <div class="main-white-button">
+                <a href="venue_list">Discover More</a>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="events/6"><img src="static/assets/images/beachwedding.jpeg" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="events/6"><h4>Beach Wedding</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Tuesday: 15:30-19:30</li>
+                                <li><i class="fa fa-map-marker"></i> 256 Elm St</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="events/1"><img src="static/assets/images/AI.jpg" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="events/1"><h4>Conference on Artificial Intelligence</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Wednesday: 08:00-14:00</li>
+                                <li><i class="fa fa-map-marker"></i> 123 Main Street</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="events/14"><img src="static/assets/images/birthday_party.jpg" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="events/14"><h4>Birthday Party</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Wednesday: 08:00-14:00</li>
+                                <li><i class="fa fa-map-marker"></i> 123 Main Street</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="events/4"><img src="static/assets/images/fitnessch.jpeg" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="events/4"><h4>Fitness Bootcamp Challenge</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Thursday: 09:00-23:00</li>
+                                <li><i class="fa fa-map-marker"></i> 456 Elm St</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+                <div class="col-lg-4">
+                    <div class="event-item">
+                        <div class="thumb">
+                            <a href="events/14"><img src="static/assets/images/birthday_party.jpg" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="events/14"><h4>Birthday Party</h4></a>
+                            <ul>
+                                <li><i class="fa fa-clock-o"></i> Wednesday: 08:00-14:00</li>
+                                <li><i class="fa fa-map-marker"></i> 123 Main Street</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+    <!-- *** Subscribe *** -->
+    <div class="subscribe">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h4>Subscribe Our Newsletter:</h4>
+                </div>
+                <div class="col-lg-8">
+                    <form id="subscribe" action="" method="get">
+                        <div class="row">
+                          <div class="col-lg-9">
+                            <fieldset>
+                              <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
+                            </fieldset>
+                          </div>
+                          <div class="col-lg-3">
+                            <fieldset>
+                              <button type="submit" id="form-submit" class="main-dark-button">Submit</button>
+                            </fieldset>
+                          </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- *** Footer *** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="address">
+                        <h4>Sunrise Tower
+                            </h4>
+                        <span>123 Sparkling Avenue <br>Metropolitan City<br>INDIA</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="links">
+                        <h4>Useful Links</h4>
+                        <ul>
+                            <li><a href="#">Info</a></li>
+                            <li><a href="#">Venues</a></li>
+                            <li><a href="#">Guides</a></li>
+                            <li><a href="#">Videos</a></li>
+                            <li><a href="#">Outreach</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="hours">
+                        <h4>Open Hours</h4>
+                        <ul>
+                            <li>Mon to Fri: 10:00 AM to 8:00 PM</li>
+                            <li>Sat - Sun: 11:00 AM to 4:00 PM</li>
+                            <li>Holidays: Closed</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6">
+                                <p>555 High Street, Suite 2100</p>
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <p class="copyright">Copyright 2024 EventCraze Company 
+                    
+                    			
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="sub-footer">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="logo"><span>Event<em>Craze</em></span></div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="menu">
+                                    <ul>
+                                        <li><a href="home" class="active">Home</a></li>
+                                        <li><a href="register">Register</a></li>
+                                        <li><a href="venue_list">Book Venue</a></li>
+                                        <li><a href="event_list">Shows & Events</a></li>
+                                        <li><a href="venue_bookings">Venue Bookings</a></li>
+
+                                         <button onclick="window.location.href='/select_ticket/'">Purchase Tickets</button>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="social-links">
+                                    <ul>
+                                        <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                        <li><a href="m"><i class="fa fa-facebook"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-instagram"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="static/assets/js/jquery-2.1.0.min.js"></script>
+
+    <!-- Bootstrap -->
+    <script src="static/assets/js/popper.js"></script>
+    <script src="static/assets/js/bootstrap.min.js"></script>
+
+    <!-- Plugins -->
+    <script src="static/assets/js/scrollreveal.min.js"></script>
+    <script src="static/assets/js/waypoints.min.js"></script>
+    <script src="static/assets/js/jquery.counterup.min.js"></script>
+    <script src="static/assets/js/imgfix.min.js"></script> 
+    <script src="static/assets/js/mixitup.js"></script> 
+    <script src="static/assets/js/accordions.js"></script>
+    <script src="static/assets/js/owl-carousel.js"></script>
+    
+    
+   
+    <!-- Global Init -->
+    <script src="static/assets/js/custom.js"></script>
+    

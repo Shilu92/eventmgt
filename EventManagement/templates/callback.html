@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Status</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+        .status {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            {% if status == 'success' %}
+            <div class="alert alert-success status">
+                <h2>Payment Successful</h2>
+                <p>Thank you for your payment. Your transaction was successful.</p>
+                <p>Transaction ID: {{ payment_id }}</p>
+                <a href="{% url 'home' %}" class="btn btn-primary">Go to Home</a>
+            </div>
+            {% else %}
+            <div class="alert alert-danger status">
+                <h2>Payment Failed</h2>
+                <p>Unfortunately, your transaction was not successful. Please try again.</p>
+                <a href="{% url 'payment' %}" class="btn btn-primary">Try Again</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

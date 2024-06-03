@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Details</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <h1>Payment Details</h1>
+    <p>Pay ID: <span id="pay_id">{{ pay_id }}</span></p>
+    <p>Order ID: <span id="order_id">{{ order_id }}</span></p>
+    <p>Amount: ₹<span id="amount">{{ amount }}</span></p>
+
+    <form id="payment-form">
+        <button type="button" id="rzp-button1">Pay with Razorpay</button>
+    </form>
+
+    <script>
+        document.getElementById('rzp-button1').onclick = function(e){
+            e.preventDefault();
+            const payId = document.getElementById('pay_id').textContent;
+            const orderId = document.getElementById('order_id').textContent;
+            const amount = document.getElementById('amount').textContent.trim();
+
+            if (parseFloat(amount) < 1) {
+                alert('Amount should be at least ₹1.00');
+                return;
+            }
+
+            fetch('payment_details/generate/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',  // Include CSRF token for Django
+                },
+                body: JSON.stringify({
+                    amount: amount,
+                    pay_id: payId,
+                    order_id: orderId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+
+                var options = {
+                    "key": 'rzp_test_F2b1KRv9bcdtMC', // Enter the Key ID generated from the Dashboard
+                    "amount": data.razorpay_amount, // Amount is in currency subunits. Default currency is INR. Hence, 100 paise = 1 INR
+                    "currency": data.razorpay_currency,
+                    "name": "Event Craze",
+                    "description": "Test Transaction",
+                    "image": "https://example.com/your_logo",
+                    "order_id": data.razorpay_order_id, // Pass the order ID generated in the backend
+                    "handler": function (response){
+                        // Handle the payment success response here
+                        alert("Payment ID: " + response.razorpay_payment_id);
+                        alert("Order ID: " + response.razorpay_order_id);
+                        alert("Signature: " + response.razorpay_signature);
+                        // You can also make an AJAX call to your server to verify the payment and update the database
+                    },
+                    "prefill": {
+                        "name": "Customer Name",
+                        "email": "customer@example.com",
+                        "contact": "9999999999"
+                    },
+                    "notes": {
+                        "address": "Customer Address"
+                    },
+                    "theme": {
+                        "color": "#F37254"
+                    }
+                };
+
+                var rzp1 = new Razorpay(options);
+                rzp1.open();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
+</body>
+</html>
